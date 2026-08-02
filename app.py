@@ -33,28 +33,28 @@ FORM_ORDER = NUMERIC_FIELDS + CATEGORICAL_FIELDS
 
 FEATURE_LABELS = {
     "Age": "Age",
-    "Dependents": "Dependents",
-    "ApplicantIncome": "Income",
+    "Dependents": "Number of Dependents",
+    "ApplicantIncome": "Annual Income",
     "LoanAmount": "Loan Amount",
     "Cibil_Score": "CIBIL Score",
-    "Tenure": "Tenure",
+    "Tenure": "Loan Tenure",
     "Gender": "Gender",
     "Married": "Marital Status",
-    "Education": "Education",
+    "Education": "Education Level",
     "Self_Employed": "Employment Type",
-    "Previous_Loan_Taken": "Previous Loan",
-    "Property_Area": "Property Area",
-    "Customer_Bandwith": "Banking History",
+    "Previous_Loan_Taken": "Previous Loan History",
+    "Property_Area": "Property Location",
+    "Customer_Bandwith": "Banking Relationship",
 }
 
 LABEL_MAPPINGS = {
     "Gender": {0: "Female", 1: "Male"},
-    "Married": {0: "No", 1: "Yes"},
-    "Education": {0: "No", 1: "Yes"},
-    "Self_Employed": {0: "No", 1: "Yes"},
-    "Previous_Loan_Taken": {0: "No", 1: "Yes"},
-    "Property_Area": {0: "Rural", 1: "Semiurban", 2: "Urban"},
-    "Customer_Bandwith": {0: "Bad", 1: "Good", 2: "Medium"},
+    "Married": {0: "Single", 1: "Married"},
+    "Education": {0: "Not Graduate", 1: "Graduate"},
+    "Self_Employed": {0: "Salaried", 1: "Self-employed"},
+    "Previous_Loan_Taken": {0: "No previous loan", 1: "Yes, previously taken"},
+    "Property_Area": {0: "Rural area", 1: "Semi-urban area", 2: "Urban area"},
+    "Customer_Bandwith": {0: "Poor", 1: "Good", 2: "Average"},
 }
 
 FEATURE_IMPORTANCE = {}

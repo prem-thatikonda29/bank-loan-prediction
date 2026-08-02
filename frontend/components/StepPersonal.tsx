@@ -14,10 +14,11 @@ export function StepPersonal({ data, onChange, errors }: StepPersonalProps) {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-medium text-slate-800">Personal Information</h3>
+      <p className="text-sm text-slate-400">Basic details about the primary applicant.</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="Age">Age</Label>
+          <Label htmlFor="Age">Age (years)</Label>
           <Input
             id="Age"
             type="number"
@@ -31,7 +32,7 @@ export function StepPersonal({ data, onChange, errors }: StepPersonalProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="Dependents">Dependents</Label>
+          <Label htmlFor="Dependents">Number of Dependents</Label>
           <Input
             id="Dependents"
             type="number"
@@ -41,6 +42,7 @@ export function StepPersonal({ data, onChange, errors }: StepPersonalProps) {
             min={0}
             max={20}
           />
+          <p className="text-xs text-slate-400">Family members financially dependent on you</p>
           {errors.Dependents && <p className="text-sm text-red-500">{errors.Dependents}</p>}
         </div>
       </div>
@@ -60,27 +62,27 @@ export function StepPersonal({ data, onChange, errors }: StepPersonalProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="Married">Married</Label>
+          <Label htmlFor="Married">Marital Status</Label>
           <Select value={data.Married || ""} onValueChange={(v) => v && onChange("Married", v)}>
             <SelectTrigger>
               <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1">Yes</SelectItem>
-              <SelectItem value="0">No</SelectItem>
+              <SelectItem value="1">Married</SelectItem>
+              <SelectItem value="0">Single</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="Education">Education</Label>
+          <Label htmlFor="Education">Education Level</Label>
           <Select value={data.Education || ""} onValueChange={(v) => v && onChange("Education", v)}>
             <SelectTrigger>
               <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1">Yes</SelectItem>
-              <SelectItem value="0">No</SelectItem>
+              <SelectItem value="1">Graduate</SelectItem>
+              <SelectItem value="0">Not Graduate</SelectItem>
             </SelectContent>
           </Select>
         </div>
