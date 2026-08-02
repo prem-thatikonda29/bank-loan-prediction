@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { NativeSelect } from "@/components/ui/native-select";
 
 interface StepFinancialProps {
   data: Record<string, string>;
@@ -80,15 +80,16 @@ export function StepFinancial({ data, onChange, errors }: StepFinancialProps) {
 
       <div className="space-y-2">
         <Label htmlFor="Self_Employed">Employment Type</Label>
-        <Select value={data.Self_Employed || ""} onValueChange={(v) => v && onChange("Self_Employed", v)}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="0">Salaried</SelectItem>
-            <SelectItem value="1">Self-employed</SelectItem>
-          </SelectContent>
-        </Select>
+        <NativeSelect
+          id="Self_Employed"
+          placeholder="Select"
+          value={data.Self_Employed || ""}
+          onChange={(e) => onChange("Self_Employed", e.target.value)}
+          options={[
+            { value: "0", label: "Salaried" },
+            { value: "1", label: "Self-employed" },
+          ]}
+        />
       </div>
     </div>
   );

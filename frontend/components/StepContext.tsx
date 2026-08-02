@@ -1,7 +1,7 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { NativeSelect } from "@/components/ui/native-select";
 
 interface StepContextProps {
   data: Record<string, string>;
@@ -18,43 +18,46 @@ export function StepContext({ data, onChange, errors }: StepContextProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label htmlFor="Previous_Loan_Taken">Previous Loan History</Label>
-          <Select value={data.Previous_Loan_Taken || ""} onValueChange={(v) => v && onChange("Previous_Loan_Taken", v)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">Yes, previously taken</SelectItem>
-              <SelectItem value="0">No, first-time applicant</SelectItem>
-            </SelectContent>
-          </Select>
+          <NativeSelect
+            id="Previous_Loan_Taken"
+            placeholder="Select"
+            value={data.Previous_Loan_Taken || ""}
+            onChange={(e) => onChange("Previous_Loan_Taken", e.target.value)}
+            options={[
+              { value: "1", label: "Yes, previously taken" },
+              { value: "0", label: "No, first-time applicant" },
+            ]}
+          />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="Property_Area">Property Location</Label>
-          <Select value={data.Property_Area || ""} onValueChange={(v) => v && onChange("Property_Area", v)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="0">Rural area</SelectItem>
-              <SelectItem value="1">Semi-urban area</SelectItem>
-              <SelectItem value="2">Urban area</SelectItem>
-            </SelectContent>
-          </Select>
+          <NativeSelect
+            id="Property_Area"
+            placeholder="Select"
+            value={data.Property_Area || ""}
+            onChange={(e) => onChange("Property_Area", e.target.value)}
+            options={[
+              { value: "0", label: "Rural area" },
+              { value: "1", label: "Semi-urban area" },
+              { value: "2", label: "Urban area" },
+            ]}
+          />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="Customer_Bandwith">Banking Relationship</Label>
-          <Select value={data.Customer_Bandwith || ""} onValueChange={(v) => v && onChange("Customer_Bandwith", v)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">Good — long-standing customer</SelectItem>
-              <SelectItem value="2">Average — some history</SelectItem>
-              <SelectItem value="0">Poor — new or limited history</SelectItem>
-            </SelectContent>
-          </Select>
+          <NativeSelect
+            id="Customer_Bandwith"
+            placeholder="Select"
+            value={data.Customer_Bandwith || ""}
+            onChange={(e) => onChange("Customer_Bandwith", e.target.value)}
+            options={[
+              { value: "1", label: "Good — long-standing customer" },
+              { value: "2", label: "Average — some history" },
+              { value: "0", label: "Poor — new or limited history" },
+            ]}
+          />
         </div>
       </div>
     </div>

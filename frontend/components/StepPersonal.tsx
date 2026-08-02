@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { NativeSelect } from "@/components/ui/native-select";
 
 interface StepPersonalProps {
   data: Record<string, string>;
@@ -50,41 +50,44 @@ export function StepPersonal({ data, onChange, errors }: StepPersonalProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
           <Label htmlFor="Gender">Gender</Label>
-          <Select value={data.Gender || ""} onValueChange={(v) => v && onChange("Gender", v)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">Male</SelectItem>
-              <SelectItem value="0">Female</SelectItem>
-            </SelectContent>
-          </Select>
+          <NativeSelect
+            id="Gender"
+            placeholder="Select"
+            value={data.Gender || ""}
+            onChange={(e) => onChange("Gender", e.target.value)}
+            options={[
+              { value: "1", label: "Male" },
+              { value: "0", label: "Female" },
+            ]}
+          />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="Married">Marital Status</Label>
-          <Select value={data.Married || ""} onValueChange={(v) => v && onChange("Married", v)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">Married</SelectItem>
-              <SelectItem value="0">Single</SelectItem>
-            </SelectContent>
-          </Select>
+          <NativeSelect
+            id="Married"
+            placeholder="Select"
+            value={data.Married || ""}
+            onChange={(e) => onChange("Married", e.target.value)}
+            options={[
+              { value: "1", label: "Married" },
+              { value: "0", label: "Single" },
+            ]}
+          />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="Education">Education Level</Label>
-          <Select value={data.Education || ""} onValueChange={(v) => v && onChange("Education", v)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">Graduate</SelectItem>
-              <SelectItem value="0">Not Graduate</SelectItem>
-            </SelectContent>
-          </Select>
+          <NativeSelect
+            id="Education"
+            placeholder="Select"
+            value={data.Education || ""}
+            onChange={(e) => onChange("Education", e.target.value)}
+            options={[
+              { value: "1", label: "Graduate" },
+              { value: "0", label: "Not Graduate" },
+            ]}
+          />
         </div>
       </div>
     </div>
