@@ -44,12 +44,19 @@ export async function predict(data: PredictionInput): Promise<PredictionResponse
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Prediction failed");
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || `Prediction failed (${res.status})`);
+  }
   return res.json();
 }
 
 export async function getStats(): Promise<StatsResponse> {
-  const res = await fetch(`${API_URL}/api/stats`);
-  if (!res.ok) return { total: 0, approved: 0, rejected: 0, approval_rate: 0 };
-  return res.json();
+  try {
+    const res = await fetch(`${API_URL}/api/stats`);
+    if (!res.ok) return { total: 0, approved: 0, rejected: 0, approval_rate: 0 };
+    return res.json();
+  } catch {
+    return { total: 0, approved: 0, rejected: 0, approval_rate: 0 };
+  }
 }

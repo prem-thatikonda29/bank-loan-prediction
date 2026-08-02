@@ -10,7 +10,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__, template_folder="template", static_folder="staticfiles")
-CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "https://*.vercel.app"]}})
+CORS(app, resources={r"/api/*": {"origins": [
+    "http://localhost:3000",
+    r"https://.*\.vercel\.app",
+    "https://bank-loan-prediction-beta.vercel.app",
+]}})
 
 MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "build_v2.pkl")
 CSV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Bank_Loan.csv")
