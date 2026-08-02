@@ -6,7 +6,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app.py .
-COPY build.pkl .
+COPY build_v2.pkl .
+COPY Bank_Loan.csv .
 COPY template/ template/
 COPY staticfiles/ staticfiles/
 COPY gunicorn.conf.py .
