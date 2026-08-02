@@ -268,11 +268,19 @@ def api_predict():
 @app.route("/api/stats")
 def api_stats():
     """Return prediction statistics from database."""
+    db_url = os.environ.get("DATABASE_URL")
+    if not db_url:
+        logger.warning("DATABASE_URL not set, stats unavailable")
+        return jsonify({"total": 0, "approved": 0, "rejected": 0, "approval_rate": 0, "available": False})
+
     try:
         import psycopg2
-        conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
+        conn = psycopg2.connect(db_url)
         cur = conn.cursor()
-        cur.execute("SELECT COUNT(*), SUM(CASE WHEN result='approved' THEN 1 ELSE 0 END) FROM predictions")
+        cur.execute("""
+            SELECT COUNT(*), SUM(CASE WHEN result='approved' THEN 1 ELSE 0 END)
+            FROM predictions
+        """)
         total, approved = cur.fetchone()
         cur.close()
         conn.close()
@@ -287,10 +295,11 @@ def api_stats():
             "approved": approved,
             "rejected": rejected,
             "approval_rate": approval_rate,
+            "available": True,
         })
     except Exception as e:
         logger.error(f"Stats error: {e}")
-        return jsonify({"total": 0, "approved": 0, "rejected": 0, "approval_rate": 0})
+        return jsonify({"total": 0, "approved": 0, "rejected": 0, "approval_rate": 0, "available": False})
 
 
 @app.route("/health")

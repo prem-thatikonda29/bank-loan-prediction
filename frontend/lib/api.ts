@@ -36,6 +36,7 @@ export interface StatsResponse {
   approved: number;
   rejected: number;
   approval_rate: number;
+  available: boolean;
 }
 
 export async function predict(data: PredictionInput): Promise<PredictionResponse> {
@@ -54,9 +55,9 @@ export async function predict(data: PredictionInput): Promise<PredictionResponse
 export async function getStats(): Promise<StatsResponse> {
   try {
     const res = await fetch(`${API_URL}/api/stats`);
-    if (!res.ok) return { total: 0, approved: 0, rejected: 0, approval_rate: 0 };
+    if (!res.ok) return { total: 0, approved: 0, rejected: 0, approval_rate: 0, available: false };
     return res.json();
   } catch {
-    return { total: 0, approved: 0, rejected: 0, approval_rate: 0 };
+    return { total: 0, approved: 0, rejected: 0, approval_rate: 0, available: false };
   }
 }

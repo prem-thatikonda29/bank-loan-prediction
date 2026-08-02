@@ -13,13 +13,17 @@ export function StatsBar() {
   return (
     <div className="border-t border-b border-slate-200 bg-white">
       <div className="max-w-2xl mx-auto px-4 py-4 text-center">
-        {stats && stats.total > 0 ? (
+        {stats === null ? (
+          <div className="h-4 bg-slate-100 rounded animate-pulse max-w-xs mx-auto" />
+        ) : stats.available && stats.total > 0 ? (
           <p className="text-sm text-slate-400">
             <span className="font-medium text-slate-600">{stats.total.toLocaleString()}</span> predictions made ·{" "}
             <span className="font-medium text-slate-600">{stats.approval_rate}%</span> approved
           </p>
         ) : (
-          <div className="h-4 bg-slate-100 rounded animate-pulse max-w-xs mx-auto" />
+          <p className="text-sm text-slate-400">
+            Built with <span className="font-medium text-slate-500">scikit-learn</span> · Try the predictor below
+          </p>
         )}
       </div>
     </div>
