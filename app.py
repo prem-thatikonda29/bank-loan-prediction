@@ -86,6 +86,17 @@ def compute_thresholds(csv_path: str) -> dict:
 APPROVED_THRESHOLDS = compute_thresholds(CSV_PATH)
 
 
+def get_db_connection():
+    """Get a database connection with SSL for Neon."""
+    import psycopg2
+    db_url = os.environ.get("DATABASE_URL")
+    if not db_url:
+        return None
+    if "sslmode" not in db_url:
+        db_url += ("&" if "?" in db_url else "?") + "sslmode=require"
+    return psycopg2.connect(db_url)
+
+
 def build_model_features(inputs: dict) -> list:
     """Convert form inputs to the 16-feature vector the model expects."""
     age = int(inputs["Age"])
@@ -231,6 +242,21 @@ def predict():
         return render_template("index.html", prediction_text="Prediction failed."), 500
 
 
+def save_prediction(result: str):
+    """Save prediction result to database."""
+    try:
+        conn = get_db_connection()
+        if not conn:
+            return
+        cur = conn.cursor()
+        cur.execute("INSERT INTO predictions (result) VALUES (%s)", (result,))
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        logger.error(f"Failed to save prediction: {e}")
+
+
 @app.route("/api/predict", methods=["POST"])
 def api_predict():
     """JSON API endpoint for predictions."""
@@ -250,6 +276,8 @@ def api_predict():
         prediction = model.predict([np.array(model_features)])[0]
         result = "approved" if prediction == 1 else "rejected"
 
+        save_prediction(result)
+
         response = {
             "prediction": int(prediction),
             "result": result,
@@ -268,14 +296,12 @@ def api_predict():
 @app.route("/api/stats")
 def api_stats():
     """Return prediction statistics from database."""
-    db_url = os.environ.get("DATABASE_URL")
-    if not db_url:
+    conn = get_db_connection()
+    if not conn:
         logger.warning("DATABASE_URL not set, stats unavailable")
         return jsonify({"total": 0, "approved": 0, "rejected": 0, "approval_rate": 0, "available": False})
 
     try:
-        import psycopg2
-        conn = psycopg2.connect(db_url)
         cur = conn.cursor()
         cur.execute("""
             SELECT COUNT(*), SUM(CASE WHEN result='approved' THEN 1 ELSE 0 END)
