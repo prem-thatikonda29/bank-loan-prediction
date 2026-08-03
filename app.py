@@ -87,13 +87,25 @@ APPROVED_THRESHOLDS = compute_thresholds(CSV_PATH)
 
 
 def get_db_connection():
-    """Get a database connection with SSL for Neon."""
+    """Get a database connection.
+
+    Supports both local and tunneled (ngrok) connections.
+    """
     import psycopg2
     db_url = os.environ.get("DATABASE_URL")
     if not db_url:
         return None
-    if "sslmode" not in db_url:
-        db_url += ("&" if "?" in db_url else "?") + "sslmode=require"
+
+    # For tunneled connections (ngrok), disable SSL since ngrok TCP doesn't support it
+    if "ngrok" in db_url:
+        if "sslmode" in db_url:
+            db_url = db_url.replace("sslmode=require", "sslmode=disable")
+            db_url = db_url.replace("sslmode=prefer", "sslmode=disable")
+            db_url = db_url.replace("sslmode=allow", "sslmode=disable")
+        else:
+            separator = "&" if "?" in db_url else "?"
+            db_url += f"{separator}sslmode=disable"
+
     return psycopg2.connect(db_url)
 
 
